@@ -11,12 +11,12 @@ namespace EventFlowDemo.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ValuesController : ControllerBase
+    public class ExamplesController : ControllerBase
     {
         private readonly ICommandBus _commandBus;
         private readonly IQueryProcessor _queryProcessor;
 
-        public ValuesController(ICommandBus commandBus, IQueryProcessor queryProcessor)
+        public ExamplesController(ICommandBus commandBus, IQueryProcessor queryProcessor)
         {
             _commandBus = commandBus;
             _queryProcessor = queryProcessor;
@@ -37,26 +37,11 @@ namespace EventFlowDemo.Controllers
         [ProducesResponseType(201)]
         public async Task<ActionResult> Post([FromBody] int value)
         {
-
-            // create command
             var exampleCommand = new ExampleCommand(ExampleId.New, value);
 
-            // publish command
             await _commandBus.PublishAsync(exampleCommand, CancellationToken.None);
 
             return CreatedAtAction(nameof(GetExample), new { id = exampleCommand.AggregateId.Value}, exampleCommand);
-        }
-
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
         }
     }
 }

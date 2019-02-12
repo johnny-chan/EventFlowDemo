@@ -5,6 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="evt-store\**" />
+    <Content Remove="evt-store\**" />
+    <EmbeddedResource Remove="evt-store\**" />
+    <None Remove="evt-store\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
