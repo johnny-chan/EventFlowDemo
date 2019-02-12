@@ -1,4 +1,4 @@
-EventFlowDemo
+# EventFlowDemo
 
 A working example of how to setup eventflow for a web api application using .net core 2.2. I will be making improvements as i learn more about EventFlow.
 
