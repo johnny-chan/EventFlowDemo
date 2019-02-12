@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using EventFlow;
+using EventFlow.Queries;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EventFlowDemo.Controllers
@@ -10,24 +13,38 @@ namespace EventFlowDemo.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
-        // GET api/values
-        [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        private readonly ICommandBus _commandBus;
+        private readonly IQueryProcessor _queryProcessor;
+
+        public ValuesController(ICommandBus commandBus, IQueryProcessor queryProcessor)
         {
-            return new string[] { "value1", "value2" };
+            _commandBus = commandBus;
+            _queryProcessor = queryProcessor;
         }
 
-        // GET api/values/5
+        // GET api/values/a6e02d4d-871e-4d18-be8a-b647706a2a11
         [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
+        [ProducesResponseType(200)]
+        public async Task<ActionResult<ExampleReadModel>> GetExample(string id)
         {
-            return "value";
+            var readModel = await _queryProcessor.ProcessAsync(new ReadModelByIdQuery<ExampleReadModel>(id), CancellationToken.None);
+
+            return Ok(readModel);
         }
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody] string value)
+        [ProducesResponseType(201)]
+        public async Task<ActionResult> Post([FromBody] int value)
         {
+
+            // create command
+            var exampleCommand = new ExampleCommand(ExampleId.New, value);
+
+            // publish command
+            await _commandBus.PublishAsync(exampleCommand, CancellationToken.None);
+
+            return CreatedAtAction(nameof(GetExample), new { id = exampleCommand.AggregateId.Value}, exampleCommand);
         }
 
         // PUT api/values/5

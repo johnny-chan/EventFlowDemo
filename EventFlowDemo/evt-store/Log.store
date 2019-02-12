@@ -1,0 +1,8 @@
+{
+  "GlobalSequenceNumber": 3,
+  "Log": {
+    "1": "./evt-store\\example-5bdae876-acf4-4bff-9238-29d250308567\\1.json",
+    "2": "./evt-store\\example-da74c2c4-a480-4928-b1a7-1cc29a9a9b88\\1.json",
+    "3": "./evt-store\\example-31c7bffe-9b68-4969-8e86-e77999074cf8\\1.json"
+  }
+}

@@ -34,8 +34,12 @@ namespace EventFlowDemo
             var container = EventFlowOptions.New
                 .UseAutofacContainerBuilder(containerBuilder)
                 .AddAspNetCoreMetadataProviders()
+                .AddEvents(typeof(ExampleEvent))
+                .AddCommands(typeof(ExampleCommand))
+                .AddCommandHandlers(typeof(ExampleCommandHandler))
                 .UseConsoleLog()
-                .UseFilesEventStore(FilesEventStoreConfiguration.Create("./evt-store"));
+                .UseFilesEventStore(FilesEventStoreConfiguration.Create("./evt-store"))
+                .UseInMemoryReadStoreFor<ExampleReadModel>();
 
             containerBuilder.Populate(services);
 
