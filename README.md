@@ -4,12 +4,13 @@ A working example of how to setup eventflow for a web api application using .net
 
 ## Endpoints 
 
-There are 2 endpoint available, one to create new example requests which in turn emit new events and one to retrieve the read data model
+[POST] /api/examples - THis appends a new example event to the event store
 
-[POST] /api/examples 
+[GET]  /api/examples/example-f134268c-de10-4740-817b-a2627aa3f8b7 - This retrieves a exmaple data record based on the identity id
 
-[GET]  /api/examples/example-f134268c-de10-4740-817b-a2627aa3f8b7
+[POST] /api/datamodels - THis rebuilds each data models/projections
 
+[DELETE] /api/datamodels - This deletes all data model records
 
 ## Configuration 
 
