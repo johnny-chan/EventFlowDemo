@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using EventFlow;
 using EventFlow.Queries;
+using EventFlow.ReadStores;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EventFlowDemo.Controllers
@@ -12,14 +13,17 @@ namespace EventFlowDemo.Controllers
     {
         private readonly ICommandBus _commandBus;
         private readonly IQueryProcessor _queryProcessor;
+        
 
-        public ExamplesController(ICommandBus commandBus, IQueryProcessor queryProcessor)
+        public ExamplesController(
+            ICommandBus commandBus, 
+            IQueryProcessor queryProcessor)
         {
             _commandBus = commandBus;
             _queryProcessor = queryProcessor;
         }
 
-        // GET api/values/a6e02d4d-871e-4d18-be8a-b647706a2a11
+        // GET api/examples/a6e02d4d-871e-4d18-be8a-b647706a2a11
         [HttpGet("{id}")]
         [ProducesResponseType(200)]
         public async Task<ActionResult<ExampleReadModel>> GetExample(string id)
@@ -29,7 +33,7 @@ namespace EventFlowDemo.Controllers
             return Ok(readModel);
         }
 
-        // POST api/values
+        // POST api/examples
         [HttpPost]
         [ProducesResponseType(201)]
         public async Task<ActionResult> Post([FromBody] int value)
@@ -39,6 +43,6 @@ namespace EventFlowDemo.Controllers
             await _commandBus.PublishAsync(exampleCommand, CancellationToken.None);
 
             return CreatedAtAction(nameof(GetExample), new { id = exampleCommand.AggregateId.Value}, exampleCommand);
-        }
+        }       
     }
 }
